@@ -1067,7 +1067,7 @@ class CI_DB_driver {
 			}
 		}
 
-		throw new CI_ShowError($message, $heading, 0, '', 'error_db');
+		throw new CI_Show_error($message, $heading, 0, '', 'error_db');
 	}
 
 	/**

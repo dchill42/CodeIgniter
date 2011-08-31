@@ -59,7 +59,7 @@ class CI_Controller {
 	{
 		// Just throw the exception - CodeIgniter will catch it
 		$log_msg = ($page && $log_error) ? '404 Page Not Found --> '.$page : '';
-		throw new CI_ShowError('The page you requested was not found.', '404 Page Not Found', 404, $log_msg,
+		throw new CI_Show_error('The page you requested was not found.', '404 Page Not Found', 404, $log_msg,
 			'error_404');
 	}
 
@@ -74,7 +74,7 @@ class CI_Controller {
 	public function end_run()
 	{
 		// Just throw the exception - CodeIgniter will catch it
-		throw new CI_EndRun();
+		throw new CI_End_run();
 	}
 
 	/**

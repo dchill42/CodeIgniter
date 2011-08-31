@@ -74,7 +74,7 @@ class CI_Encrypt {
 
 			if ($key == FALSE)
 			{
-				throw new CI_ShowError('In order to use the encryption class requires that you set an encryption key in your config file.');
+				throw new CI_Show_error('In order to use the encryption class requires that you set an encryption key in your config file.');
 			}
 		}
 

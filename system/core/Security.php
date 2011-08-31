@@ -160,13 +160,13 @@ class CI_Security {
 		// Do the tokens exist in both the _POST and _COOKIE arrays?
 		if (!isset($_POST[$this->csrf_token_name]) || !isset($_COOKIE[$this->csrf_cookie_name]))
 		{
-			throw new CI_ShowError('The action you have requested is not allowed.');
+			throw new CI_Show_error('The action you have requested is not allowed.');
 		}
 
 		// Do the tokens match?
 		if ($_POST[$this->csrf_token_name] != $_COOKIE[$this->csrf_cookie_name])
 		{
-			throw new CI_ShowError('The action you have requested is not allowed.');
+			throw new CI_Show_error('The action you have requested is not allowed.');
 		}
 
 		// We kill this since we're done and we don't want to polute the _POST array

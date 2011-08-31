@@ -15,7 +15,7 @@
 
 if ( ! function_exists('xml_parser_create'))
 {
-	throw new CI_ShowError('Your PHP installation does not support XML');
+	throw new CI_Show_error('Your PHP installation does not support XML');
 }
 
 

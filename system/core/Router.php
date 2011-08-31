@@ -17,7 +17,7 @@
  * Router Class
  *
  * Parses URIs and determines routing
- * The base class, CI_CoreShare, is defined in CodeIgniter.php and allows
+ * The base class, CI_Core_share, is defined in CodeIgniter.php and allows
  * access to protected methods between CodeIgniter, Router, and URI.
  *
  * @package		CodeIgniter
@@ -26,7 +26,7 @@
  * @category	Libraries
  * @link		http://codeigniter.com/user_guide/general/routing.html
  */
-class CI_Router extends CI_CoreShare {
+class CI_Router extends CI_Core_share {
 	/**
 	 * Reference to CodeIgniter object
 	 *
@@ -325,7 +325,7 @@ class CI_Router extends CI_CoreShare {
 	 *
 	 * This function determines what should be served based on the URI request,
 	 * as well as any "routes" that have been set in the routing config file.
-	 * The CodeIgniter object calls this protected method via CI_CoreShare.
+	 * The CodeIgniter object calls this protected method via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param	array	route overrides
@@ -406,7 +406,7 @@ class CI_Router extends CI_CoreShare {
 		if ($route === FALSE)
 		{
 			// Invalid request - show a 404
-			throw new CI_ShowError('The page you requested was not found.', '404 Page Not Found', 404,
+			throw new CI_Show_error('The page you requested was not found.', '404 Page Not Found', 404,
 				'404 Page Not Found --> '.$uri, 'error_404');
 		}
 

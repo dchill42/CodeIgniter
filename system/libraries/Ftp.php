@@ -649,7 +649,7 @@ class CI_FTP {
 	{
 		$CI =& get_instance();
 		$CI->lang->load('ftp');
-		throw new CI_ShowError($CI->lang->line($line));
+		throw new CI_Show_error($CI->lang->line($line));
 	}
 
 

@@ -17,7 +17,7 @@
  * Output Class
  *
  * Responsible for sending final output to browser
- * The base class, CI_CoreShare, is defined in CodeIgniter.php and allows
+ * The base class, CI_Core_share, is defined in CodeIgniter.php and allows
  * Loader access to protected loading methods in CodeIgniter.
  *
  * @package		CodeIgniter
@@ -26,7 +26,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/output.html
  */
-class CI_Output extends CI_CoreShare {
+class CI_Output extends CI_Core_share {
 	/**
 	 * Reference to CodeIgniter object
 	 *
@@ -275,7 +275,7 @@ class CI_Output extends CI_CoreShare {
 		// Validate code
 		if ($code == '' || ! is_numeric($code))
 		{
-			throw new CI_ShowError('Status codes must be numeric');
+			throw new CI_Show_error('Status codes must be numeric');
 		}
 
 		// Load text if necessary
@@ -287,7 +287,7 @@ class CI_Output extends CI_CoreShare {
 			}
 			else
 			{
-				throw new CI_ShowError('No status text available. Please check your status code number or '.
+				throw new CI_Show_error('No status text available. Please check your status code number or '.
 					'supply your own message text.');
 			}
 		}
@@ -361,7 +361,7 @@ class CI_Output extends CI_CoreShare {
 	 * This function sends the finalized output data to the browser along
 	 * with any server headers and profile data. It also stops the
 	 * benchmark timer so the page rendering speed and memory usage can be shown.
-	 * The CodeIgniter and Exception objects call this protected method via CI_CoreShare.
+	 * The CodeIgniter and Exception objects call this protected method via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param 	string
@@ -478,7 +478,7 @@ class CI_Output extends CI_CoreShare {
 	 * Update/serve a cached file
 	 *
 	 * This function checks for a cached copy of the request to deliver.
-	 * The CodeIgniter object calls this protected method via CI_CoreShare.
+	 * The CodeIgniter object calls this protected method via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @return	boolean	TRUE if cache displayed, otherwise FALSE

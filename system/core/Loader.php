@@ -17,7 +17,7 @@
  * Loader Class
  *
  * Loads resources (libraries, controllers, views, etc.) into CodeIgniter.
- * The base class, CI_CoreShare, is defined in CodeIgniter.php and allows
+ * The base class, CI_Core_share, is defined in CodeIgniter.php and allows
  * Loader access to protected loading methods in CodeIgniter.
  *
  * @package		CodeIgniter
@@ -26,7 +26,7 @@
  * @category	Loader
  * @link		http://codeigniter.com/user_guide/libraries/loader.html
  */
-class CI_Loader extends CI_CoreShare {
+class CI_Loader extends CI_Core_share {
 	/**
 	 * Reference to CodeIgniter object
 	 *
@@ -552,7 +552,7 @@ class CI_Loader extends CI_CoreShare {
 	 *
 	 * The config/autoload.php file contains an array that permits various
 	 * resources to be loaded automatically.
-	 * The CodeIgniter object calls this protected method via CI_CoreShare.
+	 * The CodeIgniter object calls this protected method via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param	array	autoload array

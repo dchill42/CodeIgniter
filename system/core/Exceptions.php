@@ -16,7 +16,7 @@
 /**
  * Exceptions Class
  *
- * The base class, CI_CoreShare, is defined in CodeIgniter.php and allows
+ * The base class, CI_Core_share, is defined in CodeIgniter.php and allows
  * Loader access to protected loading methods in CodeIgniter.
  *
  * @package		CodeIgniter
@@ -25,7 +25,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/exceptions.html
  */
-class CI_Exceptions extends CI_CoreShare {
+class CI_Exceptions extends CI_Core_share {
 	/**
 	 * Reference to CodeIgniter object
 	 *
@@ -64,16 +64,16 @@ class CI_Exceptions extends CI_CoreShare {
 	 * followed by any trailing segments of the override route. So, if the override
 	 * route was "errclass/method/one/two", the effect would be to call:
 	 *	errclass->method($exception, "one", "two");
-	 * The CodeIgniter object calls this protected function via CI_CoreShare.
+	 * The CodeIgniter object calls this protected function via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param	object	ShowError exception
 	 * @return	void
 	 */
-	protected function _show_error(CI_ShowError $error)
+	protected function _show_error(CI_Show_error $error)
 	{
 		// Get template
-		$template = $error->getTemplate();
+		$template = $error->get_template();
 
 		try
 		{
@@ -125,10 +125,10 @@ class CI_Exceptions extends CI_CoreShare {
 				}
 			}
 		}
-		catch (CI_ShowError $ex)
+		catch (CI_Show_error $ex)
 		{
 			// Just add the failure to the existing messages and move on
-			$error->addMessage($ex->getMessage());
+			$error->add_message($ex->getMessage());
 		}
 
 		// If the override didn't exit above, just display the generic error template

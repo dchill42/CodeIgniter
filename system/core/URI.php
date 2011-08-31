@@ -17,7 +17,7 @@
  * URI Class
  *
  * Parses URIs and determines routing
- * The base class, CI_CoreShare, is defined in CodeIgniter.php and allows
+ * The base class, CI_Core_share, is defined in CodeIgniter.php and allows
  * access to protected methods between CodeIgniter, Router, and URI.
  *
  * @package		CodeIgniter
@@ -26,7 +26,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/uri.html
  */
-class CI_URI extends CI_CoreShare {
+class CI_URI extends CI_Core_share {
 	/**
 	 * Reference to CodeIgniter object
 	 *
@@ -299,7 +299,7 @@ class CI_URI extends CI_CoreShare {
 	 * Load the URI and return it as an array of segments
 	 *
 	 * This function establishes the URI string.
-	 * The Router object calls this protected function via CI_CoreShare.
+	 * The Router object calls this protected function via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @return	array	uri segments
@@ -406,7 +406,7 @@ class CI_URI extends CI_CoreShare {
 	 * This function sets the routed segments and re-index the segment arrays so that they start
 	 * at 1 rather than 0. Doing so makes it simpler to use functions like segment(n) since there
 	 * is a 1:1 relationship between the segment array and the actual segments.
-	 * The Router object calls this protected function via CI_CoreShare.
+	 * The Router object calls this protected function via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param	array	routed segments
@@ -445,7 +445,7 @@ class CI_URI extends CI_CoreShare {
 			if (!preg_match('|^['.str_replace(array('\\-', '\-'), '-',
 			preg_quote($this->permit_chars, '-')).']+$|i', $str))
 			{
-				throw new CI_ShowError('The URI you submitted has disallowed characters.', '', 400);
+				throw new CI_Show_error('The URI you submitted has disallowed characters.', '', 400);
 			}
 		}
 

@@ -38,7 +38,7 @@ define('CI_CORE', FALSE);
  * @category	Libraries
  * @author		ExpressionEngine Dev Team
  */
-class CI_EndRun extends Exception { }
+class CI_End_run extends Exception { }
 
 /**
  * CodeIgniter Show Error exception
@@ -50,7 +50,7 @@ class CI_EndRun extends Exception { }
  * @category	Libraries
  * @author		ExpressionEngine Dev Team
  */
-class CI_ShowError extends Exception {
+class CI_Show_error extends Exception {
 	protected $heading;
 	protected $template;
 	protected $severity;
@@ -82,7 +82,7 @@ class CI_ShowError extends Exception {
 	 * @param	string	file name
 	 * @return	void
 	 */
-	public function setFile($file)
+	public function set_file($file)
 	{
 		$this->file = $file;
 	}
@@ -93,7 +93,7 @@ class CI_ShowError extends Exception {
 	 * @param	int	 line number
 	 * @return	void
 	 */
-	public function setLine($line)
+	public function set_line($line)
 	{
 		$this->line = $line;
 	}
@@ -104,7 +104,7 @@ class CI_ShowError extends Exception {
 	 * @param	int		error level
 	 * @return	void
 	 */
-	public function setSeverity($errno)
+	public function set_severity($errno)
 	{
 		// According to PHP, these are the only errors a user function can handle:
 		$levels = array(E_WARNING => 'Warning', E_NOTICE => 'Notice', E_USER_ERROR => 'User Error',
@@ -117,7 +117,7 @@ class CI_ShowError extends Exception {
 	 *
 	 * @return	string	error severity
 	 */
-	public function getSeverity()
+	public function get_severity()
 	{
 		return $this->severity;
 	}
@@ -130,7 +130,7 @@ class CI_ShowError extends Exception {
 	 * @param	mixed	error message or array of messages
 	 * @return	void
 	 */
-	public function addMessage($message)
+	public function add_message($message)
 	{
 		// Force messages to arrays
 		if (!is_array($this->message))
@@ -153,7 +153,7 @@ class CI_ShowError extends Exception {
 	 * @param	string	optional suffix tag
 	 * @return	mixed	wrapped message string if prefix/suffix given, otherwise message string or array
 	 */
-	public function getMessages($prefix = NULL, $suffix = NULL)
+	public function get_messages($prefix = NULL, $suffix = NULL)
 	{
 		// Check for empty arguments
 		if (is_null($prefix) && is_null($suffix))
@@ -178,7 +178,7 @@ class CI_ShowError extends Exception {
 	 *
 	 * @return	string	error page heading
 	 */
-	public function getHeading()
+	public function get_heading()
 	{
 		return $this->heading;
 	}
@@ -188,7 +188,7 @@ class CI_ShowError extends Exception {
 	 *
 	 * @return	string	error template name
 	 */
-	public function getTemplate()
+	public function get_template()
 	{
 		return $this->template;
 	}
@@ -199,7 +199,7 @@ class CI_ShowError extends Exception {
 	 * @param	string	log message
 	 * @return	void
 	 */
-	public function setLogMsg($log_msg)
+	public function set_log_msg($log_msg)
 	{
 		$this->log_msg = $log_msg;
 	}
@@ -209,7 +209,7 @@ class CI_ShowError extends Exception {
 	 *
 	 * @return	string	error log message
 	 */
-	public function getLogMsg()
+	public function get_log_msg()
 	{
 		return $this->log_msg;
 	}
@@ -221,7 +221,7 @@ class CI_ShowError extends Exception {
 	 * @param	string	item tag (default: li)
 	 * @return	string	backtrace output
 	 */
-	public function prettyTrace($list_tag = 'ol', $item_tag = 'li')
+	public function pretty_trace($list_tag = 'ol', $item_tag = 'li')
 	{
 		// Determine item tags
 		$item_open = empty($item_tag) ? '' : '<'.$item_tag.'>';
@@ -268,7 +268,7 @@ class CI_ShowError extends Exception {
 	/**
 	 * Format trace argument
 	 *
-	 * This helper function is a callback for prettyTrace().
+	 * This helper function is a callback for pretty_trace().
 	 * It formats function arguments to make them easy to read on the screen.
 	 *
 	 * @access	private
@@ -294,14 +294,14 @@ class CI_ShowError extends Exception {
  * CodeIgniter Core Sharing Base Class
  *
  * This base class permits access to protected methods of other core classes
- * also derived from CI_CoreShare. Subclasses are restricted to a specific list.
+ * also derived from CI_Core_share. Subclasses are restricted to a specific list.
  *
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Libraries
  * @author		ExpressionEngine Dev Team
  */
-class CI_CoreShare {
+class CI_Core_share {
 	private $CLASSES = array('CodeIgniter', 'CI_Loader', 'CI_Router', 'CI_URI', 'CI_Hooks', 'CI_Output',
 		'CI_Exceptions', 'CI_Driver_Library');
 
@@ -317,7 +317,7 @@ class CI_CoreShare {
 	 * @param	...		method arguments
 	 * @return	mixed	method return value
 	 */
-	protected final function _call_core(CI_CoreShare $object, $method)
+	protected final function _call_core(CI_Core_share $object, $method)
 	{
 		// Restrict usage to specific classes
 		foreach ($this->CLASSES as $class)
@@ -330,7 +330,7 @@ class CI_CoreShare {
 		}
 
 		// If we got here, someone is trying to hijack the core!
-		throw new CI_ShowError('Class '.get_class($this).' is not an authorized core sharing class');
+		throw new CI_Show_error('Class '.get_class($this).' is not an authorized core sharing class');
 	}
 }
 
@@ -345,7 +345,7 @@ class CI_CoreShare {
  * @category	Libraries
  * @author		ExpressionEngine Dev Team
  */
-class CodeIgniter extends CI_CoreShare {
+class CodeIgniter extends CI_Core_share {
 	protected static $_ci_instance		= NULL;
 	protected static $_ci_config_paths	= array(APPPATH);
 	protected $_ci_app_paths			= array(APPPATH => TRUE);
@@ -482,7 +482,7 @@ class CodeIgniter extends CI_CoreShare {
 	 */
 	public function run($routing)
 	{
-		// Catch any ShowError exceptions along the way
+		// Catch any Show_error exceptions along the way
 		try
 		{
 			// Get config from instance()
@@ -593,7 +593,7 @@ class CodeIgniter extends CI_CoreShare {
 				$this->run_controller();
 			}
 		}
-		catch (CI_ShowError $ex)
+		catch (CI_Show_error $ex)
 		{
 			// Display error
 			$this->_display_error($ex);
@@ -626,7 +626,7 @@ class CodeIgniter extends CI_CoreShare {
 			$this->benchmark->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
 		}
 
-		// Catch ShowError and add routes message on fail
+		// Catch Show_error and add routes message on fail
 		try
 		{
 			// Load the controller object and set special "routed" reference
@@ -634,10 +634,10 @@ class CodeIgniter extends CI_CoreShare {
 			$name = strtolower($class);
 			$this->routed =& $this->$name;
 		}
-		catch (CI_ShowError $ex)
+		catch (CI_Show_error $ex)
 		{
 			// Add default controller message and rethrow
-			$ex->addMessage('Unable to load your default controller: '.$class.
+			$ex->add_message('Unable to load your default controller: '.$class.
 				'. Please make sure the controller specified in your config/routes.php file is valid.');
 			throw $ex;
 		}
@@ -654,11 +654,11 @@ class CodeIgniter extends CI_CoreShare {
 			if ($this->_call_controller($class, $method, $route) == FALSE)
 			{
 				// Both _remap and $method failed - go to 404
-				throw new CI_ShowError('The page you requested was not found.', '404 Page Not Found', 404,
+				throw new CI_Show_error('The page you requested was not found.', '404 Page Not Found', 404,
 					'Page Not Callable --> '.$class.'/'.$method, 'error_404');
 			}
 		}
-		catch (CI_EndRun $ex)
+		catch (CI_End_run $ex)
 		{
 			// Nothing to do here but catch and allow the rest of run_controller() to execute
 		}
@@ -811,7 +811,7 @@ class CodeIgniter extends CI_CoreShare {
 	public function show_error($message, $status_code = 0, $heading = '')
 	{
 		// Just throw the error - CodeIgniter will catch it
-		throw new CI_ShowError($message, $heading, $status_code);
+		throw new CI_Show_error($message, $heading, $status_code);
 	}
 
 	/**
@@ -844,7 +844,7 @@ class CodeIgniter extends CI_CoreShare {
 			// Write log message
 			$this->log->write_log($level, $message, $php_error);
 		}
-		catch (CI_ShowError $ex)
+		catch (CI_Show_error $ex)
 		{
 			// Don't halt everything over a log message. If Log couldn't be loaded, something
 			// else is likely to blow up as well, which will display an error. Plus, this
@@ -1110,15 +1110,15 @@ class CodeIgniter extends CI_CoreShare {
 		}
 
 		// Create exception
-		$error = new CI_ShowError($errstr, 'A PHP Error Was Encountered', 500, '', 'error_php');
+		$error = new CI_Show_error($errstr, 'A PHP Error Was Encountered', 500, '', 'error_php');
 
 		// Set severity and override file (with safely trimmed path) and line
-		$error->setSeverity($errno);
-		$error->setFile(basename(dirname($errfile)).'/'.basename($errfile));
-		$error->setLine($errline);
+		$error->set_severity($errno);
+		$error->set_file(basename(dirname($errfile)).'/'.basename($errfile));
+		$error->set_line($errline);
 
 		// Set log message with translated severity
-		$error->setLogMsg('Severity: '.$error->getSeverity().' --> '.$errstr.' '.$errfile.' '.$errline);
+		$error->set_log_msg('Severity: '.$error->get_severity().' --> '.$errstr.' '.$errfile.' '.$errline);
 
 		// Pass to _display_error
 		$this->_display_error($error);
@@ -1129,7 +1129,7 @@ class CodeIgniter extends CI_CoreShare {
 	 *
 	 * Requires that controller already be loaded, validates method name, and calls
 	 * _remap if available.
-	 * The Loader and Exceptions objects call this protected function via CI_CoreShare.
+	 * The Loader and Exceptions objects call this protected function via CI_Core_share.
 	 *
 	 * @access	protected
 	 * @param	string	class name
@@ -1174,9 +1174,9 @@ class CodeIgniter extends CI_CoreShare {
 	 *
 	 * This function loads a class, along with any subclass, instantiates it
 	 * (unless overridden), and attaches the object to the core.
-	 * The Loader and Exceptions objects call this protected function via CI_CoreShare.
+	 * The Loader and Exceptions objects call this protected function via CI_Core_share.
 	 *
-	 * @throws	CI_ShowError	if object name is in use or class isn't found
+	 * @throws	CI_Show_error	if object name is in use or class isn't found
 	 * @param	string	object type ('core', 'library', 'helper', 'model', 'controller')
 	 * @param	string	class name
 	 * @param	string	object name (or FALSE to prevent attachment)
@@ -1226,13 +1226,13 @@ class CodeIgniter extends CI_CoreShare {
 				$prefix = array('CI_');
 				break;
 			default:
-				throw new CI_ShowError('Invalid object type in load request: '.$type);
+				throw new CI_Show_error('Invalid object type in load request: '.$type);
 		}
 
 		// Determine if name is in use
 		if ($obj_name !== FALSE && isset($this->$obj_name))
 		{
-			throw new CI_ShowError('The '.$type.' name you are loading is the name of a resource that is '.
+			throw new CI_Show_error('The '.$type.' name you are loading is the name of a resource that is '.
 				'already being used: '.$obj_name);
 		}
 
@@ -1262,7 +1262,7 @@ class CodeIgniter extends CI_CoreShare {
 				default:
 					// No base class is a fatal error
 					$msg = ucfirst($type).' base class '.$class.' could not be found';
-					throw new CI_ShowError($msg, '', 0, $msg);
+					throw new CI_Show_error($msg, '', 0, $msg);
 					break;
 			}
 		}
@@ -1311,7 +1311,7 @@ class CodeIgniter extends CI_CoreShare {
 			{
 				// No final class is a fatal error
 				$msg = ucfirst($type).' class '.$subclass[2].' could not be found';
-				throw new CI_ShowError($msg, '', 0, $msg);
+				throw new CI_Show_error($msg, '', 0, $msg);
 			}
 		}
 
@@ -1385,10 +1385,10 @@ class CodeIgniter extends CI_CoreShare {
 	 * Variables are prefixed with _ci_ to avoid symbol collision with
 	 * variables made available to view files.
 	 * Files automatically have access to all loaded objects via $this->object.
-	 * The Loader object calls this protected function via CI_CoreShare.
+	 * The Loader object calls this protected function via CI_Core_share.
 	 *
 	 * @access	protected
-	 * @throws	CI_ShowError	if file couldn't be found
+	 * @throws	CI_Show_error	if file couldn't be found
 	 * @param	string	view name or path to file
 	 * @param	boolean	is view
 	 * @param	boolean	return output as string
@@ -1431,7 +1431,7 @@ class CodeIgniter extends CI_CoreShare {
 
 		if (!$exists)
 		{
-			throw new CI_ShowError('Unable to load the requested file: '.$file);
+			throw new CI_Show_error('Unable to load the requested file: '.$file);
 		}
 		unset($exists);
 		unset($file);
@@ -1610,15 +1610,15 @@ class CodeIgniter extends CI_CoreShare {
 	 * This helper function lets us invoke the exception class and display errors.
 	 * It will send the error page directly to the browser and exit.
 	 *
-	 * @param	object	ShowError exception
+	 * @param	object	Show_error exception
 	 * @return	void
 	 */
-	protected function _display_error(CI_ShowError $error)
+	protected function _display_error(CI_Show_error $error)
 	{
 		try
 		{
 			// Log message if set
-			$log_msg = $error->getLogMsg();
+			$log_msg = $error->get_log_msg();
 			if (!empty($log_msg))
 			{
 				$this->log_message('error', $log_msg);
@@ -1633,11 +1633,11 @@ class CodeIgniter extends CI_CoreShare {
 			// Call show_error
 			$this->_call_core($this->exceptions, '_show_error', $error);
 		}
-		catch (CI_ShowError $ex)
+		catch (CI_Show_error $ex)
 		{
 			// Load failed - dump raw HTML output
-			$error->addMessage($ex->getMessage());
-			echo '<html><body><h1>'.$error->getHeading().'</h1>'.$error->getMessages('<p>', '</p>').'</body></html>';
+			$error->add_message($ex->getMessage());
+			echo '<html><body><h1>'.$error->get_heading().'</h1>'.$error->get_messages('<p>', '</p>').'</body></html>';
 		}
 		exit;
 	}

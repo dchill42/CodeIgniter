@@ -25,7 +25,7 @@
  * @author		EllisLab Dev Team
  * @link
  */
-class CI_Driver_Library extends CI_CoreShare {
+class CI_Driver_Library extends CI_Core_share {
 	protected $valid_drivers	= array();
 	protected $lib_name;
 
@@ -60,7 +60,7 @@ class CI_Driver_Library extends CI_CoreShare {
 		{
 			// The requested driver isn't valid!
 			$msg = 'Invalid driver requested: '.$driver_class;
-			throw new CI_ShowError($msg, '', 0, $msg);
+			throw new CI_Show_error($msg, '', 0, $msg);
 		}
 
 		// Check if driver is already defined
@@ -73,7 +73,7 @@ class CI_Driver_Library extends CI_CoreShare {
 			if (!class_exists($driver_class))
 			{
 				$msg = 'Unable to load the requested driver: '.$driver_class;
-				throw new CI_ShowError($msg, '', 0, $msg);
+				throw new CI_Show_error($msg, '', 0, $msg);
 			}
 		}
 
