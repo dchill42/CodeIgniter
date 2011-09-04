@@ -348,6 +348,7 @@ class CI_Core_share {
 class CodeIgniter extends CI_Core_share {
 	protected static $_ci_instance		= NULL;
 	protected static $_ci_config_paths	= array(APPPATH);
+	protected static $_ci_merge_arrays	= array('CodeIgniter', '_merge_arrays');
 	protected $_ci_app_paths			= array(APPPATH => TRUE);
 	protected $_ci_loaded				= array();
 	protected $_ci_subclass_prefix		= '';
@@ -410,6 +411,13 @@ class CodeIgniter extends CI_Core_share {
 		// Check for existing instance
 		if (is_null(self::$_ci_instance))
 		{
+			// Override _array_merge if PHP function is available
+			$replace = 'array_replace_recursive';
+			if (function_exists($replace))
+			{
+				self::$_ci_merge_arrays = $replace;
+			}
+
 			// Get config file contents and check for errors
 			$config = self::get_config('config.php', 'config');
 			if ($config === FALSE)
@@ -884,6 +892,24 @@ class CodeIgniter extends CI_Core_share {
 	}
 
 	/**
+	 * Merge config arrays recursively
+	 *
+	 * This function recursively merges the values from a new array into an existing array.
+	 * It uses array_replace_recursive() from PHP when available, but accepts only two arrays.
+	 * The main (existing) array is copied as a parameter, modified with the contents of
+	 * the new array (which is referenced), and returned.
+	 *
+	 * @param	array	main array
+	 * @param	array	reference to new array of values to merge in
+	 * @return	array	merged array
+	 */
+	public function merge_arrays(array $main, array &$new)
+	{
+		// Use callback to run PHP function or static method
+		return call_user_func_array(self::$_ci_merge_arrays, array($main, &$new));
+	}
+
+	/**
 	 * Add Package Path
 	 *
 	 * Prepends a package path to the app and config path arrays
@@ -1069,9 +1095,9 @@ class CodeIgniter extends CI_Core_share {
 					}
 
 					// Merge config and unset local
-					// Here, array_replace_recursive will recursively merge the arrays,
+					// Here, _ci_merge_arrays will recursively merge the arrays,
 					// adding new elements and replacing existing ones
-					$_merged = array_replace_recursive($_merged, $$_name);
+					$_merged = call_user_func_array(self::$_ci_merge_arrays, array($_merged, &$$name));
 					unset($$_name);
 				}
 			}
@@ -1566,6 +1592,33 @@ class CodeIgniter extends CI_Core_share {
 
 		// Not found - return failure
 		return FALSE;
+	}
+
+	/**
+	 * Merge config arrays recursively
+	 *
+	 * This function recursively merges the values from a new array into an existing array.
+	 * It is a substitute for array_replace_recursive() in PHP < 5.3; accepting only two arrays.
+	 * The main (existing) array is copied as a parameter, modified with the contents of
+	 * the new array (which is referenced), and returned.
+	 *
+	 * @access	protected
+	 * @param	array	main array
+	 * @param	array	new array of values to merge in
+	 * @return	array	merged array
+	 */
+	protected static function _merge_arrays(array $main, array &$new)
+	{
+		// Iterate values of new array
+		foreach ($new as $key => &$value)
+		{
+			// Merge sub-arrays recursively, add/replace all others
+			$main[$key] = (is_array($value) && isset($main[$key]) && is_array($main[$key])) ?
+				self::_merge_arrays($main[$key], $value) : $value;
+		}
+
+		// Return merged array
+		return $main;
 	}
 
 	/**
