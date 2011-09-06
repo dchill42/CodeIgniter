@@ -322,10 +322,11 @@ class CI_Core_share {
 		// Restrict usage to specific classes
 		foreach ($this->CLASSES as $class)
 		{
-			if (is_a($this, $class))
+			if ($this instanceof $class)
 			{
 				// Call protected method of other Core object
-				return call_user_func_array(array($object, $method), array_slice(func_get_args(), 2));
+				$args = func_get_args();
+				return call_user_func_array(array($object, $method), array_slice($args, 2));
 			}
 		}
 
@@ -1097,7 +1098,7 @@ class CodeIgniter extends CI_Core_share {
 					// Merge config and unset local
 					// Here, _ci_merge_arrays will recursively merge the arrays,
 					// adding new elements and replacing existing ones
-					$_merged = call_user_func_array(self::$_ci_merge_arrays, array($_merged, &$$name));
+					$_merged = call_user_func_array(self::$_ci_merge_arrays, array($_merged, &$$_name));
 					unset($$_name);
 				}
 			}
@@ -1550,8 +1551,8 @@ class CodeIgniter extends CI_Core_share {
 		}
 
 		// Prepare case options with file extension
-		$file = strtolower($class).'.php';
-		$files = array(ucfirst($file), $file);
+		$file = $class.'.php';
+		$files = array(ucfirst($file), strtolower($file));
 
 		// Search each path
 		foreach ($paths as $path)
