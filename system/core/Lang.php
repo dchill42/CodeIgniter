@@ -73,7 +73,7 @@ class CI_Lang {
 
 		if ($add_suffix == TRUE)
 		{
-			$langfile = str_replace('_lang.', '', $langfile).'_lang';
+			$langfile = str_replace('_lang', '', $langfile).'_lang';
 		}
 
 		$langfile .= '.php';
@@ -132,6 +132,27 @@ class CI_Lang {
 
 		$this->CI->log_message('debug', 'Language file loaded: language/'.$idiom.'/'.$langfile);
 		return TRUE;
+	}
+
+	/**
+	 * Determine if a language file is loaded
+	 *
+	 * @param	string	the	name of the language file to be checked
+	 * @param	boolean	FALSE to prevent adding _lang suffix
+	 * @return	boolean
+	 */
+	public function is_loaded($langfile, $add_suffix = TRUE)
+	{
+		$langfile = str_replace('.php', '', $langfile);
+
+		if ($add_suffix == TRUE)
+		{
+			$langfile = str_replace('_lang', '', $langfile).'_lang';
+		}
+
+		$langfile .= '.php';
+
+		return in_array($langfile, $this->is_loaded, TRUE);
 	}
 
 	/**

@@ -1089,7 +1089,7 @@ class CodeIgniter extends CI_Core_share {
 					}
 
 					// Check for named array
-					if (!is_array($$_name))
+					if (!isset($$_name) || !is_array($$_name))
 					{
 						// Invalid - return bad filename
 						return $_file_path;
