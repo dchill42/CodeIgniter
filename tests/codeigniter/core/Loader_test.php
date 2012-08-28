@@ -18,6 +18,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::library
+	 */
 	public function test_library()
 	{
 		$this->_setup_config_mock();
@@ -34,14 +37,17 @@ class Loader_test extends CI_TestCase {
 		$this->assertAttributeInstanceOf($class, $lib, $this->ci_obj);
 
 		// Test no lib given
-		$this->assertEquals(FALSE, $this->load->library());
+		$this->assertFalse($this->load->library());
 
 		// Test a string given to params
-		$this->assertEquals(NULL, $this->load->library($lib, ' '));
+		$this->assertNull($this->load->library($lib, ' '));
 	}
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::library
+	 */
 	public function test_library_config()
 	{
 		$this->_setup_config_mock();
@@ -70,6 +76,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::library
+	 */
 	public function test_load_library_in_application_dir()
 	{
 		$this->_setup_config_mock();
@@ -90,6 +99,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::driver
+	 */
 	public function test_driver()
 	{
 		$this->_setup_config_mock();
@@ -102,44 +114,27 @@ class Loader_test extends CI_TestCase {
 		$this->_create_content('libraries', $driver, $content, $dir, TRUE);
 
 		// Test loading as an array.
-		$this->assertFalse($this->load->driver(array($driver)));
+		$this->assertNull($this->load->driver(array($driver)));
 		$this->assertTrue(class_exists($class), $class.' does not exist');
 		$this->assertAttributeInstanceOf($class, $driver, $this->ci_obj);
 
-        // Test loading as a library with a name
-        $obj = 'testdrive';
-		$this->assertFalse($this->load->library($driver, NULL, $obj));
+		// Test loading as a library with a name
+		$obj = 'testdrive';
+		$this->assertNull($this->load->library($driver, NULL, $obj));
 		$this->assertAttributeInstanceOf($class, $obj, $this->ci_obj);
 
 		// Test no driver given
-		$this->assertEquals(FALSE, $this->load->driver());
+		$this->assertFalse($this->load->driver());
 
 		// Test a string given to params
-		$this->assertEquals(NULL, $this->load->driver($driver, ' '));
+		$this->assertNull($this->load->driver($driver, ' '));
 	}
 
 	// --------------------------------------------------------------------
 
-	private function _setup_config_mock()
-	{
-		// Mock up a config object until we
-		// figure out how to test the library configs
-		// $config = $this->getMock('CI_Config', NULL, array(), '', FALSE);
-		// $config->expects($this->any())
-		// 	   ->method('load')
-		// 	   ->will($this->returnValue(TRUE));
-        // As long as we have Config test its own loading, we just need paths
-		$config = new StdClass();
-
-		// Reinitialize config paths
-		$config->_config_paths = array($this->load->app_path);
-
-		// Add the mock to our stdClass
-		$this->ci_instance_var('config', $config);
-	}
-
-	// --------------------------------------------------------------------
-
+	/**
+	 * @covers CI_Loader::model
+	 */
 	public function test_non_existent_model()
 	{
 		$this->setExpectedException(
@@ -153,7 +148,7 @@ class Loader_test extends CI_TestCase {
 	// --------------------------------------------------------------------
 
 	/**
-	 * @coverts CI_Loader::model
+	 * @covers CI_Loader::model
 	 */
 	public function test_models()
 	{
@@ -186,7 +181,7 @@ class Loader_test extends CI_TestCase {
 	// --------------------------------------------------------------------
 
 	/**
-	 * @coverts CI_Loader::view
+	 * @covers CI_Loader::view
 	 */
 	public function test_load_view()
 	{
@@ -206,7 +201,7 @@ class Loader_test extends CI_TestCase {
 	// --------------------------------------------------------------------
 
 	/**
-	 * @coverts CI_Loader::view
+	 * @covers CI_Loader::view
 	 */
 	public function test_non_existent_view()
 	{
@@ -220,6 +215,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::file
+	 */
 	public function test_file()
 	{
 		// Create views directory with test file
@@ -243,6 +241,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::vars
+	 */
 	public function test_vars()
 	{
 		$this->assertNull($this->load->vars(array('foo' => 'bar')));
@@ -251,6 +252,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::helper
+	 */
 	public function test_helper()
 	{
 		// Create helper directory in app path with test helper
@@ -274,6 +278,9 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * @covers CI_Loader::helper
+	 */
 	public function test_loading_multiple_helpers()
 	{
 		// Create helper directory in base path with test helpers
@@ -307,25 +314,74 @@ class Loader_test extends CI_TestCase {
 
 	// --------------------------------------------------------------------
 
-	// public function test_load_config()
-	// {
-	// 	$this->_setup_config_mock();
-	// 	$this->assertNull($this->load->config('config', FALSE));
-	// }
+	/**
+	 * @covers CI_Loader::add_package_path
+	 * @covers CI_Loader::get_package_paths
+	 * @covers CI_Loader::remove_package_path
+	 */
+	public function test_packages()
+	{
+		$this->_setup_config_mock();
+
+		// Create third-party directory in app path with model
+		$dir = 'third-party';
+		$lib = 'unit_test_package';
+		$class = 'CI_'.ucfirst($lib);
+		$content = '<?php class '.$class.' { } ';
+		$this->_create_content($dir, $lib, $content);
+
+		// Test failed load without path
+		$this->setExpectedException(
+			'RuntimeException',
+			'CI Error: Unable to load the requested class: '.$lib
+		);
+		$this->load->library($lib);
+
+		// Clear exception and get paths
+		$this->setExpectedException(NULL);
+		$paths = $this->load->get_package_paths(TRUE);
+
+		// Add path and verify
+		$path = $this->load->app_path.$dir;
+		$this->assertNull($this->load->add_package_path($path));
+		$this->assertContains($path, $this->load->get_package_paths(TRUE));
+
+		// Test successful load
+		$this->assertNull($this->load->library($lib));
+		$this->assertTrue(class_exists($class), $class.' does not exist');
+
+		// Remove path and verify restored paths
+		$this->assertNull($this->load->remove_package_path($path));
+		$this->assertEquals($paths, $this->load->get_package_paths(TRUE));
+	}
 
 	// --------------------------------------------------------------------
 
-	// public function test_load_bad_config()
-	// {
-	// 	$this->_setup_config_mock();
+	/**
+	 * @covers CI_Loader::config
+	 */
+	public function test_load_config()
+	{
+		$this->_setup_config_mock();
+		$this->assertNull($this->load->config('config', FALSE));
+	}
 
-	// 	$this->setExpectedException(
-	// 		'RuntimeException',
-	// 		'CI Error: The configuration file foobar.php does not exist.'
-	// 	);
+	// --------------------------------------------------------------------
 
-	// 	$this->load->config('foobar', FALSE);
-	// }
+	private function _setup_config_mock()
+	{
+		// Mock up a config object so config() has something to call
+		$config = $this->getMock('CI_Config', array('load'), array(), '', FALSE);
+		$config->expects($this->any())
+			   ->method('load')
+			   ->will($this->returnValue(TRUE));
+
+		// Reinitialize config paths to use VFS
+		$config->_config_paths = array($this->load->app_path);
+
+		// Add the mock to our stdClass
+		$this->ci_instance_var('config', $config);
+	}
 
 	// --------------------------------------------------------------------
 
@@ -334,16 +390,16 @@ class Loader_test extends CI_TestCase {
 		// Create structure containing directory
 		$tree = array($dir => array());
 
-        // Check for subdirectory
-        if ($sub) {
-            // Add subdirectory to tree and get reference
-            $tree[$dir][$sub] = array();
-            $leaf =& $tree[$dir][$sub];
-        }
-        else {
-            // Get reference to main directory
-            $leaf =& $tree[$dir];
-        }
+		// Check for subdirectory
+		if ($sub) {
+			// Add subdirectory to tree and get reference
+			$tree[$dir][$sub] = array();
+			$leaf =& $tree[$dir][$sub];
+		}
+		else {
+			// Get reference to main directory
+			$leaf =& $tree[$dir];
+		}
 
 		// Check for multiple files
 		if (is_array($file)) {
