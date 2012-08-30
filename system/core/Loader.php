@@ -844,7 +844,7 @@ class CI_Loader {
 	/**
 	 * Add Package Path
 	 *
-	 * Prepends a parent path to the library, mvc, and config path arrays
+	 * Adds a parent path to the library, mvc, and config path arrays
 	 *
 	 * @param	string	path
 	 * @param	bool	view cascade flag
@@ -858,10 +858,10 @@ class CI_Loader {
 		// Prepend path to library/helper paths
 		array_unshift($this->_ci_library_paths, $path);
 
-		// Add MVC path with view cascade param
+		// Prepend MVC path with view cascade param
 		$this->_ci_mvc_paths = array($path => $view_cascade) + $this->_ci_mvc_paths;
 
-		// Prepend config file path
+		// Append config file path
 		array_push($this->CI->config->_config_paths, $path);
 	}
 
@@ -1363,7 +1363,7 @@ class CI_Loader {
 	 * libraries, and helpers to be loaded automatically.
 	 *
 	 * This function is public, as it's called from CodeIgniter.php.
-	 * However, there is no reason you should ever need to use it.
+	 * However, there is no reason you should ever need to call it directly.
 	 *
 	 * @return	void
 	 */
@@ -1398,20 +1398,14 @@ class CI_Loader {
 			}
 
 			// Load all other libraries
-			foreach ($this->_ci_autoload['libraries'] as $item)
-			{
-				$this->library($item);
-			}
+			$this->library($this->_ci_autoload['libraries']);
 		}
 
 		// Autoload controllers
 		if (isset($this->_ci_autoload['controller']))
 		{
-			$controller = $this->_ci_autoload['controller'];
-			if ( ! is_array($controller))
-			{
-				$controller = array($controller);
-			}
+			// Get controller(s) as an array
+			$controller = (array)$this->_ci_autoload['controller'];
 
 			// We have to "manually" feed multiples to controller(), since an array
 			// is treated as a router stack instead of more than one controller
@@ -1424,10 +1418,7 @@ class CI_Loader {
 		// Autoload drivers
 		if (isset($autoload['drivers']))
 		{
-			foreach ($autoload['drivers'] as $item)
-			{
-				$this->driver($item);
-			}
+			$this->driver($autoload['drivers']);
 		}
 
 		// Autoload models
