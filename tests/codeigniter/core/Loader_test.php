@@ -24,8 +24,9 @@ class Loader_test extends CI_TestCase {
 	{
 		// Create library in VFS
 		$lib = 'unit_test_lib';
-		$class = 'CI_'.ucfirst($lib);
-		$this->ci_vfs_create($lib, '<?php class '.$class.' { }', $this->ci_base_root, 'libraries');
+		$name = ucfirst($lib);
+		$class = 'CI_'.$name;
+		$this->ci_vfs_create($name, '<?php class '.$class.' { }', $this->ci_base_root, 'libraries');
 
 		// Test is_loaded fail
 		$this->assertFalse($this->load->is_loaded($lib));
@@ -42,7 +43,7 @@ class Loader_test extends CI_TestCase {
 		$this->assertNull($this->load->library($lib, ' '));
 
 		// Create library w/o class
-		$lib = 'bad_test_lib';
+		$lib = 'Bad_test_lib';
 		$this->ci_vfs_create($lib, '', $this->ci_base_root, 'libraries');
 
 		// Test non-existent class
@@ -98,9 +99,10 @@ class Loader_test extends CI_TestCase {
 	{
 		// Create library in VFS
 		$lib = 'unit_test_config_lib';
-		$class = 'CI_'.ucfirst($lib);
+		$name = ucfirst($lib);
+		$class = 'CI_'.$name;
 		$content = '<?php class '.$class.' { public function __construct($params) { $this->config = $params; } }';
-		$this->ci_vfs_create($lib, $content, $this->ci_base_root, 'libraries');
+		$this->ci_vfs_create($name, $content, $this->ci_base_root, 'libraries');
 
 		// Create config file
 		$cfg = array(
@@ -128,7 +130,7 @@ class Loader_test extends CI_TestCase {
 		// Create library in VFS
 		$lib = 'super_test_library';
 		$class = ucfirst($lib);
-		$this->ci_vfs_create($lib, '<?php class '.$class.' { }', $this->ci_app_root, 'libraries');
+		$this->ci_vfs_create($class, '<?php class '.$class.' { }', $this->ci_app_root, 'libraries');
 
 		// Load library
 		$this->assertNull($this->load->library($lib));
@@ -144,10 +146,10 @@ class Loader_test extends CI_TestCase {
 	{
 		// Create driver in VFS
 		$driver = 'unit_test_driver';
-		$dir = ucfirst($driver);
-		$class = 'CI_'.$dir;
+		$name = ucfirst($driver);
+		$class = 'CI_'.$name;
 		$content = '<?php class '.$class.' { } ';
-		$this->ci_vfs_create($driver, $content, $this->ci_base_root, 'libraries/'.$dir);
+		$this->ci_vfs_create($name, $content, $this->ci_base_root, 'libraries/'.$name);
 
 		// Test loading as an array.
 		$this->assertNull($this->load->driver(array($driver)));
@@ -401,11 +403,12 @@ class Loader_test extends CI_TestCase {
 
 	public function test_packages()
 	{
-		// Create model in VFS package path
+		// Create library in VFS package path
 		$dir = 'third-party';
 		$lib = 'unit_test_package';
-		$class = 'CI_'.ucfirst($lib);
-		$this->ci_vfs_create($lib, '<?php class '.$class.' { }', $this->ci_app_root, array($dir, 'libraries'));
+		$name = ucfirst($lib);
+		$class = 'CI_'.$name;
+		$this->ci_vfs_create($name, '<?php class '.$class.' { }', $this->ci_app_root, array($dir, 'libraries'));
 
 		// Get paths
 		$paths = $this->load->get_package_paths(TRUE);
@@ -435,7 +438,7 @@ class Loader_test extends CI_TestCase {
 		// Test failed load without path
 		$this->setExpectedException(
 			'RuntimeException',
-			'CI Error: Unable to load the requested class: '.$lib
+			'CI Error: Unable to load the requested class: '.$name
 		);
 		$this->load->library($lib);
 	}
@@ -461,14 +464,15 @@ class Loader_test extends CI_TestCase {
 
 		// Create library in VFS
 		$lib = 'autolib';
-		$lib_class = 'CI_'.ucfirst($lib);
-		$this->ci_vfs_create($lib, '<?php class '.$lib_class.' { }', $this->ci_base_root, 'libraries');
+		$libnm = ucfirst($lib);
+		$lib_class = 'CI_'.$libnm;
+		$this->ci_vfs_create($libnm, '<?php class '.$lib_class.' { }', $this->ci_base_root, 'libraries');
 
 		// Create driver in VFS
 		$drv = 'autodrv';
-		$subdir = ucfirst($drv);
-		$drv_class = 'CI_'.$subdir;
-		$this->ci_vfs_create($drv, '<?php class '.$drv_class.' { }', $this->ci_base_root, array('libraries', $subdir));
+		$drvnm = ucfirst($drv);
+		$drv_class = 'CI_'.$drvnm;
+		$this->ci_vfs_create($drvnm, '<?php class '.$drv_class.' { }', $this->ci_base_root, array('libraries', $drvnm));
 
 		// Create model in VFS package path
 		$dir = 'testdir';

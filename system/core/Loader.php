@@ -950,51 +950,36 @@ class CI_Loader {
 			$class = substr($class, $last_slash);
 		}
 
-		// Get subclass prefix and paths to check
-		$prefix = config_item('subclass_prefix');
-		$libdir = 'libraries/'.$subdir;
-		$subpath = APPPATH.$libdir.$prefix;
-		$baseclass = BASEPATH.'libraries/'.ucfirst($class).'.php';
-
-		// We'll test for both lowercase and capitalized versions of the file name on case-sensitive systems
-		$cases = array(ucfirst($class));
-		if (DIRECTORY_SEPARATOR !== '\\')
-		{
-			$cases[] = strtolower($class);
-		}
+		// Class filename must be uppercased
+		$class = ucfirst($class);
 
 		// Is this a class extension request?
-		foreach ($cases as $class)
+		$prefix = config_item('subclass_prefix');
+		$subclass = APPPATH.'libraries/'.$subdir.$prefix.$class.'.php';
+		if (file_exists($subclass))
 		{
-			$subclass = $subpath.$class.'.php';
-			if (file_exists($subclass))
+			$baseclass = BASEPATH.'libraries/'.$class.'.php';
+			if ( ! file_exists($baseclass))
 			{
-				if ( ! file_exists($baseclass))
-				{
-					$msg = 'Unable to load the requested class: '.$class;
-					log_message('error', $msg);
-					show_error($msg);
-				}
-
-				require_once($baseclass);
-				require_once($subclass);
-				return $this->_ci_init_class($class, $prefix, $params, $object_name);
+				$msg = 'Unable to load the requested class: '.$class;
+				log_message('error', $msg);
+				show_error($msg);
 			}
+
+			require_once($baseclass);
+			require_once($subclass);
+			return $this->_ci_init_class($class, $prefix, $params, $object_name);
 		}
 
 		// Let's search for the requested library file and load it.
-		// We'll check each path for the defined cases of the filename
 		foreach ($this->_ci_library_paths as $path)
 		{
-			foreach ($cases as $class)
+			// Does the file exist?
+			$filepath = $path.'libraries/'.$subdir.$class.'.php';
+			if (file_exists($filepath))
 			{
-				// Does the file exist?
-				$filepath = $path.$libdir.$class.'.php';
-				if (file_exists($filepath))
-				{
-					require_once($filepath);
-					return $this->_ci_init_class($class, '', $params, $object_name);
-				}
+				require_once($filepath);
+				return $this->_ci_init_class($class, '', $params, $object_name);
 			}
 		}
 
