@@ -278,13 +278,18 @@ class CI_Router {
 						continue;
 					}
 
-					// Get class and method
-					$class = array_unshift($default);
-					$method = array_unshift($default);
+					// Get class and method:
+					// - index 0 and 1 are always present
+					// - since we are in a sub-folder the
+					//   first entry is now the directory
+					$directory = array_shift($default);
+					$class = array_shift($default);
+					// the $default route may not have the method set
+					$method = count($default) ? array_shift($default) : 'index';
 				}
 
 				// Does the requested controller exist in the sub-folder?
-				if (file_exists($path.'controllers/'.$route[0].$class.'.php'))
+				if (file_exists($path.'controllers/'.$route[0].'/'.$class.'.php'))
 				{
 					// Found it - assemble segments
 					if ( ! isset($route[1]))
@@ -532,6 +537,8 @@ class CI_Router {
 
 	/**
 	 * Get segments of default controller
+	 *
+	 * Returns at least two segments
 	 *
 	 * @access	protected
 	 * @return	array	array of segments

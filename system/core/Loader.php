@@ -338,7 +338,7 @@ class CI_Loader {
 			}
 
 			// Include source and instantiate object
-			include($path.'controllers/'.$subdir.strtolower($class).'.php');
+			include($path.'controllers/'.$subdir.'/'.strtolower($class).'.php');
 			$classnm = ucfirst($class);
 			$this->CI->$name = new $classnm();
 
