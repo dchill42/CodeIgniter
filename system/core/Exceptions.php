@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  * CodeIgniter
  *
@@ -24,6 +24,7 @@
  * @since		Version 1.0
  * @filesource
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Exceptions Class
@@ -35,6 +36,7 @@
  * @link		http://codeigniter.com/user_guide/libraries/exceptions.html
  */
 class CI_Exceptions {
+
 	/**
 	 * Nesting level of the output buffering mechanism
 	 *
@@ -48,10 +50,10 @@ class CI_Exceptions {
 	 * @var	array
 	 */
 	public $levels = array(
-		E_ERROR				=>	'Error',
-		E_WARNING			=>	'Warning',
-		E_PARSE				=>	'Parsing Error',
-		E_NOTICE			=>	'Notice',
+		E_ERROR			=>	'Error',
+		E_WARNING		=>	'Warning',
+		E_PARSE			=>	'Parsing Error',
+		E_NOTICE		=>	'Notice',
 		E_CORE_ERROR		=>	'Core Error',
 		E_CORE_WARNING		=>	'Core Warning',
 		E_COMPILE_ERROR		=>	'Compile Error',
@@ -59,11 +61,11 @@ class CI_Exceptions {
 		E_USER_ERROR		=>	'User Error',
 		E_USER_WARNING		=>	'User Warning',
 		E_USER_NOTICE		=>	'User Notice',
-		E_STRICT			=>	'Runtime Notice'
+		E_STRICT		=>	'Runtime Notice'
 	);
 
 	/**
-	 * Initialize execption class
+	 * Class constructor
 	 *
 	 * @return	void
 	 */
@@ -78,12 +80,12 @@ class CI_Exceptions {
 	/**
 	 * Exception Logger
 	 *
-	 * This function logs PHP generated error messages
+	 * Logs PHP generated error messages
 	 *
-	 * @param	string	the error severity
-	 * @param	string	the error string
-	 * @param	string	the error filepath
-	 * @param	string	the error line number
+	 * @param	int	$severity	Log level
+	 * @param	string	$message	Error message
+	 * @param	string	$filepath	File path
+	 * @param	int	$line		Line number
 	 * @return	void
 	 */
 	public function log_exception($severity, $message, $filepath, $line)
@@ -95,13 +97,13 @@ class CI_Exceptions {
 	// --------------------------------------------------------------------
 
 	/**
-	 * 404 Page Not Found Handler
+	 * 404 Error Handler
 	 *
-	 * Calls the 404 override method if configured, or displays a generic 404 error.
+	 * @uses	CI_Exceptions::show_error()
 	 *
-	 * @param	string	the page
-	 * @param 	bool	log error yes/no
-	 * @return	string
+	 * @param	string	$page		Page URI
+	 * @param 	bool	$log_error	Whether to log the error
+	 * @return	void
 	 */
 	public function show_404($page = '', $log_error = TRUE)
 	{
@@ -120,18 +122,15 @@ class CI_Exceptions {
 	/**
 	 * General Error Page
 	 *
-	 * This function takes an error message as input and passes it to the error
-	 * override method if configured, or displays it using the specified template.
-	 * The override method will get the heading and message(s) as its first arguments,
-	 * followed by any trailing segments of the override route. So, if the override
-	 * route was "errclass/method/one/two", the effect would be to call:
-	 *	errclass->method($heading, $message, "one", "two");
+	 * Takes an error message as input (either as a string or an array)
+	 * and displays it using the specified template.
 	 *
-	 * @param	string	the heading
-	 * @param	mixed	the message string or array of strings
-	 * @param	string	the template name
-	 * @param 	int	the status code
-	 * @return	string
+	 * @param	string		$heading	Page heading
+	 * @param	string|string[]	$message	Error message
+	 * @param	string		$template	Template name
+	 * @param 	int		$status_code	(default: 500)
+	 *
+	 * @return	string	Error page output
 	 */
 	public function show_error($heading, $message, $template = 'error_general', $status_code = 500)
 	{
@@ -190,11 +189,11 @@ class CI_Exceptions {
 	/**
 	 * Native PHP error handler
 	 *
-	 * @param	string	the error severity
-	 * @param	string	the error string
-	 * @param	string	the error filepath
-	 * @param	string	the error line number
-	 * @return	string
+	 * @param	int	$severity	Error level
+	 * @param	string	$message	Error message
+	 * @param	string	$filepath	File path
+	 * @param	int	$line		Line number
+	 * @return	string	Error page output
 	 */
 	public function show_php_error($severity, $message, $filepath, $line)
 	{
@@ -218,6 +217,7 @@ class CI_Exceptions {
 		ob_end_clean();
 		echo $buffer;
 	}
+
 }
 
 /* End of file Exceptions.php */

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  * CodeIgniter
  *
@@ -24,9 +24,10 @@
  * @since		Version 1.0
  * @filesource
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * CodeIgniter Application Controller Class
+ * Application Controller Class
  *
  * This class object is the base class that connects each controller to the root object
  *
@@ -37,15 +38,16 @@
  * @link		http://codeigniter.com/user_guide/general/controllers.html
  */
 class CI_Controller {
+
 	/**
-	 * Reference to the global CI instance
+	 * Reference to the CI singleton
 	 *
 	 * @var	object
 	 */
 	protected $CI = NULL;
 
 	/**
-	 * Set up controller properties and methods
+	 * Class constructor
 	 *
 	 * @return	void
 	 */
@@ -69,6 +71,8 @@ class CI_Controller {
 			return $this->CI->$key;
 		}
 	}
+
+	// --------------------------------------------------------------------
 
 	/**
 	 * Isset magic method

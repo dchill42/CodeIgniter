@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  * CodeIgniter
  *
@@ -24,6 +24,7 @@
  * @since		Version 1.0
  * @filesource
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * CodeIgniter Application Core Class
@@ -41,7 +42,7 @@ class CodeIgniter {
 	/**
 	 * CodeIgniter singleton instance
 	 *
-	 * @var	 object
+	 * @var	object
 	 * @access  private
 	 */
 	private static $instance = NULL;
@@ -132,8 +133,7 @@ class CodeIgniter {
 		}
 
 		// Class must be loaded, and method cannot start with underscore, nor be a member of the base class
-		if (isset($this->$name) && strncmp($method, '_', 1) != 0 &&
-		in_array(strtolower($method), array_map('strtolower', get_class_methods('CI_Controller'))) == FALSE)
+		if (class_exists($class) && isset($this->$name) && $method[0] !== '_' && !method_exists('CI_Controller', $method))
 		{
 			// Check for _remap
 			if ($this->is_callable($class, '_remap'))
@@ -219,7 +219,7 @@ class CodeIgniter {
  *  Load the global functions
  * ------------------------------------------------------
  */
-	require(BASEPATH.'core/Common.php');
+	require_once(BASEPATH.'core/Common.php');
 
 /*
  * ------------------------------------------------------
@@ -268,7 +268,7 @@ class CodeIgniter {
  *	Do we have any manually set config items in the index.php file?
  * ------------------------------------------------------
  */
-	if (isset($assign_to_config))
+	if (isset($assign_to_config) && is_array($assign_to_config))
 	{
 		$CI->config->_assign_to_config($assign_to_config);
 	}
