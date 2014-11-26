@@ -361,7 +361,7 @@ class CI_Loader {
 
 			// Include source and instantiate object
 			// The Router is responsible for providing a valid path in the route stack
-			include($path.'controllers/'.$subdir.strtolower($class).'.php');
+			include($path.'controllers/'.(!empty($subdir)?$subdir.'/':'').strtolower($class).'.php');
 			$classnm = ucfirst($class);
 			$this->CI->$name = new $classnm();
 
