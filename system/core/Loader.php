@@ -361,7 +361,7 @@ class CI_Loader {
 
 			// Include source and instantiate object
 			// The Router is responsible for providing a valid path in the route stack
-			include($path.'controllers/'.$subdir.strtolower($class).'.php');
+			include($path.'controllers/'.(!empty($subdir)?$subdir.'/':'').strtolower($class).'.php');
 			$classnm = ucfirst($class);
 			$this->CI->$name = new $classnm();
 
@@ -1088,10 +1088,11 @@ class CI_Loader {
 					foreach ($this->_ci_module_paths as $_ci_mod_path)
 					{
 						// Does the view exist in the module?
-						if (file_exists($_ci_mod_path.$_ci_viewpath))
+						$_ci_subdir = preg_replace('/([^\/]+)/', '$1/views', $_ci_subdir, 1);
+						if (file_exists($_ci_mod_path.$_ci_subdir.$_ci_file))
 						{
 							// Set path, mark existing, and quit
-							$_ci_path = $_ci_mod_path.$_ci_viewpath;
+							$_ci_path = $_ci_mod_path.$_ci_subdir.$_ci_file;
 							$_ci_exists = TRUE;
 							break;
 						}
